@@ -50,3 +50,17 @@ With table1 as
 Select t.player_id, t.device_id
 from table1 as t
 where t.rk=1
+
+--2nd way --correlated subquery
+select player_id, device_id
+from Activity a
+where event_date = (select min(event_date) from Activity where player_id = a.player_id);--correlated subquery
+--This is a common pattern in SQL when you need to find attributes associated with extremes (first, last, highest, lowest) within groups.
+--A correlated subquery is a subquery that references a column from the outer query. It is evaluated once per row of the outer query.
+
+--3rd way ---- This solution uses an inline view (subquery in the FROM clause) with the analytic function ROW_NUMBER().
+select player_id, device_id
+from (select player_id, device_id,
+             row_number() over(partition by player_id order by event_date) as rnk
+      from Activity)
+where rnk = 1;
