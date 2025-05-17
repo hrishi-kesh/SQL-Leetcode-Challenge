@@ -77,3 +77,14 @@ select *
 from t1 join t2
 on t1.ad_id = t2.ad) a
 order by ctr desc, ad_id
+
+--My solution
+-- Query to calculate CTR
+select ad_id, 
+       round(
+         sum(case when action='Clicked' then 1 else 0 end) /
+         nullif(sum(case when action in ('Clicked','Viewed') then 1 else 0 end), 0) * 100, 2
+       ) as ctr --NULLIF returns NULL if the denominator is 0, preventing division by zero error
+from Ads 
+group by ad_id
+order by ad_id;
