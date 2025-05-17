@@ -49,3 +49,11 @@ select sell_date, count(distinct product) as num_sold, group_concat(distinct pro
 from activities
 group by 1
 order by 1
+
+-- Oracle Solution using Listagg
+select sell_date, 
+       count(distinct product) as num_sold, 
+       listagg(distinct product, ',') within group (order by product) as products
+from activities 
+group by sell_date 
+order by sell_date;
