@@ -51,3 +51,8 @@ where kids_content = 'Y' and content_type = 'Movies') a
 join
 tvprogram using (content_id)
 where month(program_date) = 6
+
+--Oracle Solution
+select distinct c.title
+from TVProgram t inner join content c on t.content_id = c.content_id
+where c.Kids_content = 'Y' and c.content_type = 'Movies' and to_char(t.program_date,'mon yyyy')= 'jun 2020';
