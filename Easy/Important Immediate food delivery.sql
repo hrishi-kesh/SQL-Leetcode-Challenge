@@ -43,3 +43,12 @@
 Select 
 Round(avg(case when order_date=customer_pref_delivery_date then 1 else 0 end)*100,2) as immediate_percentage
 from delivery
+
+-- Oracle Simple Solution without avg
+-- 2nd way Query to find the percentage of immediate orders
+select round(sum(case when order_date = customer_pref_delivery_date then 1 else 0 end) / count(delivery_id) * 100, 2) as immediate_percentage
+from Delivery;
+
+--3rd way using count only 
+select round(count(case when order_date = customer_pref_delivery_date then 1 end) / count(delivery_id) * 100, 2) as immediate_percentage
+from Delivery;
