@@ -65,3 +65,10 @@ where a.buyer_id in
 (Select a.buyer_id from sales a join product b on a.product_id = b.product_id where b.product_name = 'S8') 
 and
 a.buyer_id not in (Select a.buyer_id from sales a join product b on a.product_id = b.product_id where b.product_name = 'iPhone')
+
+ --Oracle solution easy way
+select buyer_id
+from Sales
+group by buyer_id
+having sum(case when product_id = 1 then 1 else 0 end) > 0
+    and sum(case when product_id = 3 then 1 else 0 end) = 0;
